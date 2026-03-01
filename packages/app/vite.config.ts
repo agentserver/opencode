@@ -20,6 +20,7 @@ const sentry =
     : false
 
 export default defineConfig({
+  base: "https://opencodeapp.agentserver.dev/",
   plugins: [desktopPlugin, sentry] as any,
   server: {
     host: "0.0.0.0",
