@@ -4,6 +4,14 @@ import ShikiWorkerUrl from "@pierre/diffs/worker/worker.js?worker&url"
 export type WorkerPoolStyle = "unified" | "split"
 
 export function workerFactory(): Worker {
+  // When the worker script is hosted on a different origin (e.g. a shared asset
+  // domain), browsers block `new Worker(crossOriginUrl)`. Work around this by
+  // creating a same-origin Blob URL that imports the cross-origin module.
+  const url = new URL(ShikiWorkerUrl, location.href)
+  if (url.origin !== location.origin) {
+    const blob = new Blob([`import ${JSON.stringify(url.href)}`], { type: "text/javascript" })
+    return new Worker(URL.createObjectURL(blob), { type: "module" })
+  }
   return new Worker(ShikiWorkerUrl, { type: "module" })
 }
 
