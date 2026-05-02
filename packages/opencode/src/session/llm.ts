@@ -370,10 +370,10 @@ const live: Layer.Layer<
         maxOutputTokens: params.maxOutputTokens,
         abortSignal: input.abort,
         headers: {
+          "x-opencode-session": input.sessionID,
           ...(input.model.providerID.startsWith("opencode")
             ? {
                 "x-opencode-project": opencodeProjectID,
-                "x-opencode-session": input.sessionID,
                 "x-opencode-request": input.user.id,
                 "x-opencode-client": Flag.OPENCODE_CLIENT,
                 "User-Agent": `opencode/${InstallationVersion}`,
